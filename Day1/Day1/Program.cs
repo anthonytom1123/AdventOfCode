@@ -61,10 +61,6 @@ namespace Day1
             {
                 Console.WriteLine("dirty line: " + dirtyLine);
                 MatchCollection matches = RegexFinder(dirtyLine.ToLower());
-                foreach (Match match in matches)
-                {
-                    Console.WriteLine("Value: " + match.Groups[1].Value);
-                }
                 firstNum = numMap[matches[0].Groups[1].Value];
                 secondNum = numMap[matches[matches.Count - 1].Groups[1].Value];
 
