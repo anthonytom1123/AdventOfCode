@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Y03d4N33xMXyFhQGj7xblQCbsifPdCQCSeCukG4YVEgtE44ZFbZtglAcugvBK6oGZLfB1b1/Db7E/AyfL2dBfQ==",
+  "dgSpecHash": "eEVbophvjh6jWEEjoWNi8kNk2V9uuiU0z9d23xwDhG1PCxux2A+PslhK5mUCPwQodOqDNXubWkqc1U7X2oSBeA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Anthony\\Desktop\\Project\\AdventOfCode\\Day1\\Day1\\Day1.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Anthony\\.nuget\\packages\\system.configuration.configurationmanager\\8.0.0\\system.configuration.configurationmanager.8.0.0.nupkg.sha512",
+    "C:\\Users\\Anthony\\.nuget\\packages\\system.security.cryptography.protecteddata\\8.0.0\\system.security.cryptography.protecteddata.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
