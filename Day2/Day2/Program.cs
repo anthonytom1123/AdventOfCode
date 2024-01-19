@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Drawing;
 
 namespace Day2
 {
@@ -14,6 +15,11 @@ namespace Day2
             GetIdSum();
         }
 
+        /*
+         * fewest number of cubes of each color that could make the game possible
+         * Find the sum of the power of the set
+         * power of a set is equal to the numbers of red,green, and blue cubes multiplied together. (4 red * 2 green * 4 blue = 32 total)
+         */
         public static void GetIdSum()
         {
             
@@ -35,26 +41,23 @@ namespace Day2
             foreach(string line in input)
             {
                 Console.WriteLine($"Current Line: {line}");
-                model = ParseInput(line);
+                model = ParseGame(line);
                 if (model.ErrorCode != 0) 
                 {
                     Console.WriteLine(model.ErrorMessage);
                     return;
                 }
-                else if (model.IsPossible) 
+                else
                 {
-                    total += model.Id;
+                    total += model.minBlue * model.minGreen * model.minRed;
                     Console.WriteLine($"Is good. Total is {total}");
                 }
             }
             Console.WriteLine($"Total is {total}");
         }
 
-        public static GameModel ParseInput(string line)
+        public static GameModel ParseGame(string line)
         {
-            /* Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-             * <Game ID>: <round 1>; <round 2> 
-             */
             GameModel model = new GameModel();
             model.ErrorCode = 0;
             int id;
@@ -64,9 +67,9 @@ namespace Day2
             {
                 model.ErrorCode = -1;
                 model.ErrorMessage = $"[ERROR] Issue parsing id in ParseInput(): {line}";
-                foreach(string m in idAndRounds)
+                foreach(string splitLine in idAndRounds)
                 {
-                    Console.WriteLine($"id split is {m}");
+                    Console.WriteLine($"id split is {splitLine}");
                 }
                 return model;
             }
@@ -84,18 +87,16 @@ namespace Day2
 
         public static bool ParseRound(string round, GameModel model)
         {
-            //3 blue, 4 red = split by ", "
-            //if not possible, set model.IsPossible to false
             string[] pickedCubes = round.Split(", ");
             int quantity;
             foreach(string pickedCube in pickedCubes) 
             {
                 //parse cube (3 blue)
-                Console.WriteLine($"{pickedCube}");
+                Console.WriteLine($"Current cube: {pickedCube}");
                 string[] parsedCube = pickedCube.Split(" ");
                 if(Int32.TryParse(parsedCube[0], out quantity))
                 {
-                    model.IsPossible = IsRoundPossible(quantity, parsedCube[1].ToLower());
+                    FindMinMarbles(quantity, parsedCube[1].ToLower().Replace("\r", string.Empty), model);
                     if (!model.IsPossible) { return false; }
                 }
                 else
@@ -108,27 +109,27 @@ namespace Day2
             return true;
         }
 
-        public static bool IsRoundPossible(int num, string color)
+        public static void FindMinMarbles(int quantity, string color, GameModel model)
         {
-            int maxRed = 12;
-            int maxGreen = 13;
-            int maxBlue = 14;
+            switch (color) 
+            {
+                case "red":
+                    model.minRed = Math.Max(quantity, model.minRed);
+                    break;
+                case "blue":
+                    model.minBlue = Math.Max(quantity, model.minBlue);
+                    break;
+                case "green":
+                    model.minGreen = Math.Max(quantity, model.minGreen);
+                    break;
+                default:
+                    model.IsPossible = false;
+                    model.ErrorCode= -1;
+                    model.ErrorMessage = $"[ERROR] FindMinMarbles: Color \"{color}\" is invalid.";
+                    break;
+            }
+            model.IsPossible = true;
 
-            //Console.WriteLine($"num: {num} color: {color.TrimEnd()}");
-            //Console.WriteLine($"red is {color.Equals("red")} green is {color.Equals("green")} blue is {color.Equals("blue")}");
-            if(color.TrimEnd().Equals("red"))
-            {
-                return num <= maxRed;
-            }
-            else if (color.TrimEnd().Equals("blue"))
-            {
-                return num <= maxBlue;
-            }
-            else if (color.TrimEnd().Equals("green"))
-            {
-                return num <= maxGreen;
-            }
-            return true;
         }
     }
 }

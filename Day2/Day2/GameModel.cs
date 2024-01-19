@@ -13,5 +13,8 @@ namespace Day2
         public bool IsPossible { get; set; }
         public int ErrorCode {  get; set; }
         public string ErrorMessage {  get; set; } 
+        public int minRed { get; set; }
+        public int minBlue { get; set; }
+        public int minGreen { get; set; }
     }
 }
